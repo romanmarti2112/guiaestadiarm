@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Estadía - Tu guía digital de alojamiento</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            900: '#4c1d95',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .app-container {
+            max-width: 480px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background-color: #030712;
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.7);
+        }
+        @media (min-width: 768px) {
+            .app-container {
+                border-radius: 2.5rem;
+                margin-top: 2rem;
+                margin-bottom: 2rem;
+                overflow: hidden;
+                border: 8px solid #1e293b;
+            }
+        }
+        .fade-in {
+            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Modern Glassmorphism styling */
+        .glass-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.85));
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-pill {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 antialiased h-full flex flex-col items-center justify-center">
+
+    <div id="app" class="app-container w-full relative flex flex-col bg-slate-950">
+        
+        <!-- Header with Dynamic Carousel & Original Property Photo Background -->
+        <header id="app-header" class="relative bg-slate-900 text-white pb-6 pt-8 px-6 rounded-b-[2.5rem] shadow-2xl overflow-hidden border-b border-slate-800/80">
+            <!-- Carousel Container -->
+            <div id="header-carousel" class="absolute inset-0 z-0">
+                <!-- Slides will be injected dynamically -->
+            </div>
+            <!-- Dynamic Gradient Overlays for stunning contrast -->
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-slate-950/30 z-10"></div>
+            
+            <div class="relative z-20 flex items-center justify-between mb-8">
+                <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold bg-violet-500/25 backdrop-blur-md text-violet-200 border border-violet-500/40 shadow-xl">
+                    <i class="fa-solid fa-sparkles text-violet-300"></i> Guía Estadía Digital
+                </span>
+                <div class="flex items-center gap-1.5 bg-black/50 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 text-xs font-semibold text-slate-200 shadow-lg">
+                    <span id="carousel-indicator" class="text-violet-400 font-bold">1/4</span>
+                </div>
+            </div>
+
+            <div class="relative z-20 space-y-2 mt-2">
+                <h1 id="prop-nombre" class="text-3xl font-extrabold tracking-tight text-white drop-shadow-md">Cargando...</h1>
+                <p id="prop-ubicacion" class="text-slate-200 text-sm flex items-center gap-2 font-medium drop-shadow">
+                    <i class="fa-solid fa-location-dot text-violet-400"></i> <span>...</span>
+                </p>
+            </div>
+
+            <div class="relative z-20 mt-6 pt-4 border-t border-white/20 flex items-center justify-between">
+                <p id="prop-tagline" class="text-xs text-violet-200 italic font-semibold tracking-wide drop-shadow">"Tu refugio ideal"</p>
+                <div class="flex items-center gap-1.5 bg-violet-950/60 px-3 py-1 rounded-full border border-violet-500/30">
+                    <span class="flex h-2 w-2 relative">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-violet-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-violet-500"></span>
+                    </span>
+                    <span class="text-[11px] font-bold text-violet-300">Guía Activa</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main id="app-content" class="flex-1 px-5 py-6 space-y-5 overflow-y-auto pb-28 no-scrollbar fade-in">
+            <!-- Populated dynamically by app.js -->
+        </main>
+
+        <!-- Floating Footer Action Bar -->
+        <div class="absolute bottom-0 left-0 right-0 p-4 bg-slate-900/95 backdrop-blur-2xl border-t border-slate-800/80 flex items-center justify-around gap-3 z-30 shadow-2xl">
+            <a id="quick-whatsapp" href="#" target="_blank" class="flex-1 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-bold py-3.5 px-4 rounded-2xl text-center shadow-lg shadow-emerald-900/50 transition duration-300 flex items-center justify-center gap-2 text-sm">
+                <i class="fa-brands fa-whatsapp text-lg"></i> Anfitrión
+            </a>
+            <a id="quick-wifi" href="#wifi-card" onclick="if(window.app) window.app.openModal('wifi')" class="flex-1 bg-slate-800/90 hover:bg-slate-700 text-white font-bold py-3.5 px-4 rounded-2xl text-center shadow-lg transition duration-300 flex items-center justify-center gap-2 text-sm cursor-pointer border border-slate-700">
+                <i class="fa-solid fa-wifi text-violet-400"></i> Wi-Fi
+            </a>
+        </div>
+
+        <!-- Generic Interactive Modal -->
+        <div id="generic-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+            <div id="modal-content-container" class="relative max-w-lg w-full bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl p-6 space-y-4 max-h-[85vh] overflow-y-auto">
+                <!-- Dynamic content -->
+            </div>
+        </div>
+
+        <!-- Notification Toast -->
+        <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 bg-slate-900 border border-violet-500/30 text-white px-5 py-3 rounded-2xl shadow-2xl text-sm font-medium flex items-center gap-3 transition-all duration-300 opacity-0 pointer-events-none translate-y-[-20px]">
+            <i class="fa-solid fa-circle-check text-violet-400 text-base"></i>
+            <span id="toast-message">¡Copiado al portapapeles!</span>
+        </div>
+
+    </div>
+
+    <script>
+        // Multi-property database for Vercel deployment
+        // To add a new property tomorrow, just add a new entry here with its unique slug key!
+        const propertiesDatabase = {
+            "los-alamos": {
+                id: "los-alamos",
+                nombre: "Casa en Carrodilla",
+                ubicacion: "Carrodilla, Luján de Cuyo, Mendoza",
+                tagline: "Todo lo que necesitás durante tu estadía",
+                airbnbUrl: "https://www.airbnb.com.ar/rooms/1344835320968184539",
+                wifi: {
+                    red: "Carrodilla_Fiber_WiFi",
+                    password: "mendozagourmet2026"
+                },
+                whatsapp: "5492615555555",
+                mapsUrl: "https://maps.google.com/?q=Carrodilla,+Lujan+de+Cuyo,+Mendoza",
+                mapsText: "Ver en Google Maps (Carrodilla)",
+                checkin: "15:00",
+                checkout: "10:00",
+                reglas: [
+                    { icono: "fa-ban", titulo: "Sin fiestas", desc: "No se permiten fiestas ni eventos ruidosos." },
+                    { icono: "fa-volume-xmark", titulo: "Silencio nocturno", desc: "Respetar el descanso de los vecinos a partir de las 22:00 hs." },
+                    { icono: "fa-smoking-ban", titulo: "Prohibido fumar", desc: "No está permitido fumar en el interior de la casa." }
+                ],
+                restaurantes: [
+                    {
+                        nombre: "Bodega & Restaurant Vistalba",
+                        descripcion: "Exquisita cocina regional maridada con vinos de alta gama.",
+                        distancia: "10 min en auto",
+                        maps: "https://maps.google.com/?q=Vistalba+Lujan+de+Cuyo"
+                    },
+                    {
+                        nombre: "Parrilla La Carrodilla",
+                        descripcion: "Cortes tradicionales argentinos a las brasas y empanadas caseras.",
+                        distancia: "5 min",
+                        maps: "https://maps.google.com/?q=Carrodilla+Lujan+de+Cuyo"
+                    }
+                ],
+                actividades: [
+                    {
+                        nombre: "Caminos del Vino - Luján de Cuyo",
+                        descripcion: "Visita guiada por las bodegas históricas de la cuna del Malbec.",
+                        imagen: "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=600&q=80",
+                        maps: "https://maps.google.com/?q=Bodegas+Lujan+de+Cuyo"
+                    },
+                    {
+                        nombre: "Potrerillos y Dique",
+                        descripcion: "Paisajes imponentes de montaña, deportes náuticos y vistas panorámicas.",
+                        imagen: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80",
+                        maps: "https://maps.google.com/?q=Dique+Potrerillos+Mendoza"
+                    }
+                ],
+                fotos: [
+                    "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=800&q=80"
+                ]
+            },
+            "el-bosque": {
+                id: "el-bosque",
+                nombre: "Cabañas El Bosque",
+                ubicacion: "Avenida Las Cumbres, Potrerillos, Mendoza",
+                tagline: "Desconectate rodeado de naturaleza y montaña",
+                airbnbUrl: "https://www.airbnb.com.ar",
+                wifi: {
+                    red: "ElBosque_Mountain_WiFi",
+                    password: "potrerillos2026"
+                },
+                whatsapp: "5492614444444",
+                mapsUrl: "https://maps.google.com/?q=Potrerillos+Mendoza",
+                mapsText: "Ver ubicación en Potrerillos",
+                checkin: "14:00",
+                checkout: "10:30",
+                reglas: [
+                    { icono: "fa-fire", titulo: "Cuidado con el fuego", desc: "Prohibido hacer fuego fuera de los espacios habilitados (parrilla)." },
+                    { icono: "fa-trash", titulo: "Cuidado ambiental", desc: "Por favor clasificar los residuos y utilizar los cestos provistos." },
+                    { icono: "fa-paw", titulo: "Mascotas", desc: "Consultar previamente con el anfitrión antes de traer mascotas." }
+                ],
+                restaurantes: [
+                    {
+                        nombre: "Flanagan's Bar de Montaña",
+                        descripcion: "Cervecería artesanal y picadas con vistas imperdibles al lago.",
+                        distancia: "5 min en auto",
+                        maps: "https://maps.google.com/?q=Potrerillos"
+                    }
+                ],
+                actividades: [
+                    {
+                        nombre: "Rafting en Río Mendoza",
+                        descripcion: "Aventura y adrenalina pura en los rápidos de agua de deshielo.",
+                        imagen: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=600&q=80",
+                        maps: "https://maps.google.com/?q=Rafting+Potrerillos"
+                    }
+                ],
+                fotos: [
+                    "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=800&q=80",
+                    "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80"
+                ]
+            }
+        };
+
+        class GuiaEstadiaApp {
+            constructor() {
+                this.property = this.resolveProperty();
+                this.currentSlide = 0;
+                this.carouselInterval = null;
+                this.init();
+            }
+
+            resolveProperty() {
+                // Determine property based on URL path (/c/el-bosque) or query param (?c=el-bosque)
+                const pathParts = window.location.pathname.split('/');
+                let slug = "";
+                
+                const cIndex = pathParts.indexOf('c');
+                if (cIndex !== -1 && pathParts[cIndex + 1]) {
+                    slug = pathParts[cIndex + 1];
+                } else {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    slug = urlParams.get('c');
+                }
+
+                if (slug && propertiesDatabase[slug]) {
+                    return propertiesDatabase[slug];
+                }
+
+                // Default fallback property if none specified
+                return propertiesDatabase["los-alamos"];
+            }
+
+            init() {
+                this.renderHeaderInfo();
+                this.initCarousel();
+                this.renderMainContent();
+            }
+
+            renderHeaderInfo() {
+                document.getElementById('prop-nombre').innerText = this.property.nombre;
+                document.getElementById('prop-ubicacion').innerHTML = `<i class="fa-solid fa-location-dot text-violet-400"></i> <span>${this.property.ubicacion}</span>`;
+                document.getElementById('prop-tagline').innerText = `"${this.property.tagline}"`;
+                document.getElementById('quick-whatsapp').href = `https://wa.me/${this.property.whatsapp}?text=Hola,%20estoy%20en%20${encodeURIComponent(this.property.nombre)}%20y%20quiero%20consultarles:`;
+            }
+
+            initCarousel() {
+                const carouselContainer = document.getElementById('header-carousel');
+                carouselContainer.innerHTML = this.property.fotos.map((foto, index) => `
+                    <div class="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out ${index === 0 ? 'opacity-100' : 'opacity-0'}" style="background-image: url('${foto}');" data-slide="${index}"></div>
+                `).join('');
+
+                if (this.property.fotos.length > 1) {
+                    if (this.carouselInterval) clearInterval(this.carouselInterval);
+                    this.carouselInterval = setInterval(() => {
+                        this.nextSlide();
+                    }, 4500);
+                }
+            }
+
+            nextSlide() {
+                const slides = document.querySelectorAll('#header-carousel > div');
+                if (!slides.length) return;
+                
+                slides[this.currentSlide].classList.remove('opacity-100');
+                slides[this.currentSlide].classList.add('opacity-0');
+                
+                this.currentSlide = (this.currentSlide + 1) % slides.length;
+                
+                slides[this.currentSlide].classList.remove('opacity-0');
+                slides[this.currentSlide].classList.add('opacity-100');
+                
+                const indicator = document.getElementById('carousel-indicator');
+                if (indicator) {
+                    indicator.innerText = `${this.currentSlide + 1}/${slides.length}`;
+                }
+            }
+
+            renderMainContent() {
+                const d = this.property;
+                const container = document.getElementById('app-content');
+                container.innerHTML = `
+                    <!-- Quick Access Cards Grid -->
+                    <div class="grid grid-cols-2 gap-3.5">
+                        <div onclick="window.app.openModal('wifi')" class="glass-card p-4 rounded-3xl shadow-xl hover:border-violet-500/50 transition duration-300 cursor-pointer flex flex-col justify-between group">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="w-11 h-11 rounded-2xl bg-violet-500/20 border border-violet-500/30 flex items-center justify-center text-violet-300 group-hover:scale-110 transition shadow-lg">
+                                    <i class="fa-solid fa-wifi text-lg"></i>
+                                </div>
+                                <i class="fa-solid fa-chevron-right text-xs text-slate-500 group-hover:translate-x-0.5 transition"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-white text-sm">Wi-Fi de Alta Velocidad</h3>
+                                <p class="text-xs text-slate-400 mt-0.5 truncate">${d.wifi.red}</p>
+                            </div>
+                        </div>
+
+                        <div onclick="window.app.openModal('ubicacion')" class="glass-card p-4 rounded-3xl shadow-xl hover:border-blue-500/50 transition duration-300 cursor-pointer flex flex-col justify-between group">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="w-11 h-11 rounded-2xl bg-blue-500/20 border border-blue-500/30 flex items-center justify-center text-blue-300 group-hover:scale-110 transition shadow-lg">
+                                    <i class="fa-solid fa-map-location-dot text-lg"></i>
+                                </div>
+                                <i class="fa-solid fa-chevron-right text-xs text-slate-500 group-hover:translate-x-0.5 transition"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-white text-sm">Ubicación y Mapas</h3>
+                                <p class="text-xs text-slate-400 mt-0.5">Cómo llegar y lugar</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Horarios Card -->
+                    <div class="glass-card rounded-3xl p-5 shadow-xl">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-300 shadow-lg">
+                                <i class="fa-regular fa-clock text-base"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-white text-sm">Horarios de Estadía</h3>
+                                <p class="text-xs text-slate-400">Check-in y Check-out</p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="bg-slate-950/70 p-3.5 rounded-2xl border border-slate-800 text-center shadow-inner">
+                                <span class="text-[11px] uppercase tracking-wider text-slate-400 font-bold block mb-1">Check-in</span>
+                                <span class="text-lg font-extrabold text-emerald-400">${d.checkin} hs</span>
+                            </div>
+                            <div class="bg-slate-950/70 p-3.5 rounded-2xl border border-slate-800 text-center shadow-inner">
+                                <span class="text-[11px] uppercase tracking-wider text-slate-400 font-bold block mb-1">Check-out</span>
+                                <span class="text-lg font-extrabold text-violet-400">${d.checkout} hs</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- House Rules Section -->
+                    <div class="glass-card rounded-3xl p-5 shadow-xl space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-2xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-purple-300 shadow-lg">
+                                    <i class="fa-solid fa-list-check text-base"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-white text-sm">Normas de la Casa</h3>
+                                    <p class="text-xs text-slate-400">Para una convivencia armoniosa</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-2.5">
+                            ${d.reglas.map(r => `
+                                <div class="flex items-start gap-3 p-3.5 rounded-2xl bg-slate-950/50 border border-slate-800/80">
+                                    <div class="w-8 h-8 rounded-xl bg-slate-800/80 flex items-center justify-center text-slate-300 shrink-0 mt-0.5">
+                                        <i class="fa-solid ${r.icono} text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-xs font-bold text-white">${r.titulo}</h4>
+                                        <p class="text-xs text-slate-400 mt-0.5 leading-relaxed">${r.desc}</p>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Recommended Places & Restaurants -->
+                    ${d.restaurantes && d.restaurantes.length > 0 ? `
+                    <div class="glass-card rounded-3xl p-5 shadow-xl space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-2xl bg-rose-500/20 border border-rose-500/30 flex items-center justify-center text-rose-300 shadow-lg">
+                                <i class="fa-solid fa-utensils text-base"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-white text-sm">Recomendados Cerca</h3>
+                                <p class="text-xs text-slate-400">Gastronomía y paseos</p>
+                            </div>
+                        </div>
+                        <div class="space-y-3">
+                            ${d.restaurantes.map(rest => `
+                                <div class="p-3.5 rounded-2xl bg-slate-950/70 border border-slate-800 flex flex-col gap-2">
+                                    <div class="flex items-start justify-between">
+                                        <div>
+                                            <h4 class="text-xs font-bold text-white">${rest.nombre}</h4>
+                                            <p class="text-xs text-slate-400 mt-0.5">${rest.descripcion}</p>
+                                        </div>
+                                        <span class="text-[10px] font-semibold bg-rose-500/15 text-rose-300 px-2.5 py-1 rounded-full border border-rose-500/30 shrink-0">${rest.distancia}</span>
+                                    </div>
+                                    <a href="${rest.maps}" target="_blank" class="self-start text-[11px] font-semibold text-violet-400 hover:text-violet-300 flex items-center gap-1.5 mt-1">
+                                        <i class="fa-solid fa-location-arrow"></i> Cómo llegar
+                                    </a>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    ` : ''}
+
+                    <!-- Tourist Activities -->
+                    ${d.actividades && d.actividades.length > 0 ? `
+                    <div class="glass-card rounded-3xl p-5 shadow-xl space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-2xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-300 shadow-lg">
+                                <i class="fa-solid fa-mountain-sun text-base"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-white text-sm">Paseos imperdibles</h3>
+                                <p class="text-xs text-slate-400">Turismo y excursiones</p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 gap-3">
+                            ${d.actividades.map(act => `
+                                <div class="rounded-2xl overflow-hidden bg-slate-950/70 border border-slate-800 flex flex-col shadow-md">
+                                    <div class="h-32 w-full bg-cover bg-center relative" style="background-image: url('${act.imagen}');">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/85 to-transparent"></div>
+                                    </div>
+                                    <div class="p-3.5 space-y-2">
+                                        <h4 class="text-xs font-bold text-white">${act.nombre}</h4>
+                                        <p class="text-xs text-slate-400 leading-relaxed">${act.descripcion}</p>
+                                        <a href="${act.maps}" target="_blank" class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-violet-400 hover:text-violet-300 pt-1">
+                                            <i class="fa-solid fa-map"></i> Ver en Mapa
+                                        </a>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    ` : ''}
+
+                    <!-- Photo Gallery Button Card -->
+                    <div onclick="window.app.openModal('galeria')" class="glass-card p-5 rounded-3xl shadow-xl hover:border-violet-500/50 transition duration-300 cursor-pointer flex items-center justify-between group">
+                        <div class="flex items-center gap-3.5">
+                            <div class="w-11 h-11 rounded-2xl bg-violet-500/20 border border-violet-500/30 flex items-center justify-center text-violet-300 group-hover:scale-110 transition shadow-lg">
+                                <i class="fa-solid fa-images text-lg"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-white text-sm">Galería de Fotos</h3>
+                                <p class="text-xs text-slate-400">Conocé cada rincón del lugar</p>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-xs text-slate-500 group-hover:translate-x-1 transition"></i>
+                    </div>
+
+                    <!-- Airbnb Footer Link -->
+                    <div class="text-center pt-2 pb-4 space-y-2">
+                        <a href="${d.airbnbUrl}" target="_blank" class="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-2xl glass-card text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 transition w-full shadow-lg border border-slate-800">
+                            <i class="fa-brands fa-airbnb text-rose-400 text-base"></i> Ver publicación original en Airbnb
+                        </a>
+                    </div>
+                `;
+            }
+
+            openModal(type) {
+                const modal = document.getElementById('generic-modal');
+                const container = document.getElementById('modal-content-container');
+                const d = this.property;
+                let content = '';
+
+                if (type === 'wifi') {
+                    content = `
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-9 h-9 rounded-xl bg-violet-500/20 text-violet-300 flex items-center justify-center">
+                                    <i class="fa-solid fa-wifi"></i>
+                                </div>
+                                <h3 class="font-bold text-white text-base">Conexión Wi-Fi</h3>
+                            </div>
+                            <button onclick="window.app.closeModal()" class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                        <div class="space-y-4 pt-2">
+                            <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-3">
+                                <div>
+                                    <span class="text-xs text-slate-400 block font-medium">Red Wi-Fi (SSID)</span>
+                                    <div class="flex items-center justify-between mt-1 bg-slate-900 p-3 rounded-xl border border-slate-800">
+                                        <span id="wifi-red" class="font-mono text-sm font-bold text-white">${d.wifi.red}</span>
+                                        <button onclick="window.app.copyText('${d.wifi.red}', 'Nombre de red copiado')" class="text-xs bg-violet-500/20 text-violet-300 hover:bg-violet-500/30 px-3 py-1.5 rounded-lg font-semibold transition">Copiar</button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="text-xs text-slate-400 block font-medium">Contraseña</span>
+                                    <div class="flex items-center justify-between mt-1 bg-slate-900 p-3 rounded-xl border border-slate-800">
+                                        <span id="wifi-pass" class="font-mono text-sm font-bold text-emerald-400">${d.wifi.password}</span>
+                                        <button onclick="window.app.copyText('${d.wifi.password}', 'Contraseña copiada')" class="text-xs bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500/30 px-3 py-1.5 rounded-lg font-semibold transition">Copiar</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <button onclick="window.app.closeModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-3 rounded-2xl transition text-sm">Entendido</button>
+                        </div>
+                    `;
+                } else if (type === 'ubicacion') {
+                    content = `
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-9 h-9 rounded-xl bg-blue-500/20 text-blue-300 flex items-center justify-center">
+                                    <i class="fa-solid fa-map-location-dot"></i>
+                                </div>
+                                <h3 class="font-bold text-white text-base">Ubicación exacta</h3>
+                            </div>
+                            <button onclick="window.app.closeModal()" class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                        <div class="space-y-4 pt-2">
+                            <p class="text-xs text-slate-300 leading-relaxed">${d.ubicacion}</p>
+                            <a href="${d.mapsUrl}" target="_blank" class="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-bold py-3 px-4 rounded-2xl transition text-center flex items-center justify-center gap-2 text-sm shadow-lg">
+                                <i class="fa-solid fa-compass"></i> ${d.mapsText}
+                            </a>
+                            <button onclick="window.app.closeModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-3 rounded-2xl transition text-sm">Cerrar</button>
+                        </div>
+                    `;
+                } else if (type === 'galeria') {
+                    content = `
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-9 h-9 rounded-xl bg-violet-500/20 text-violet-300 flex items-center justify-center">
+                                    <i class="fa-solid fa-images"></i>
+                                </div>
+                                <h3 class="font-bold text-white text-base">Galería Fotográfica</h3>
+                            </div>
+                            <button onclick="window.app.closeModal()" class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                        <div class="space-y-3 pt-2 max-h-[60vh] overflow-y-auto no-scrollbar">
+                            ${d.fotos.map(foto => `
+                                <div class="rounded-2xl overflow-hidden h-52 bg-slate-950 border border-slate-800 shadow-md">
+                                    <img src="${foto}" class="w-full h-full object-cover" alt="Foto de alojamiento">
+                                </div>
+                            `).join('')}
+                        </div>
+                        <button onclick="window.app.closeModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-3 rounded-2xl transition text-sm mt-3">Cerrar galería</button>
+                    `;
+                }
+
+                container.innerHTML = content;
+                modal.classList.remove('hidden');
+            }
+
+            closeModal() {
+                document.getElementById('generic-modal').classList.add('hidden');
+            }
+
+            copyText(text, msg) {
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    this.showToast(msg);
+                } catch (err) {
+                    console.error('Error al copiar', err);
+                }
+                document.body.removeChild(textArea);
+            }
+
+            showToast(msg) {
+                const toast = document.getElementById('toast');
+                document.getElementById('toast-message').innerText = msg;
+                toast.classList.remove('opacity-0', 'translate-y-[-20px]');
+                toast.classList.add('opacity-100', 'translate-y-0');
+                setTimeout(() => {
+                    toast.classList.remove('opacity-100', 'translate-y-0');
+                    toast.classList.add('opacity-0', 'translate-y-[-20px]');
+                }, 2500);
+            }
+        }
+
+        // Initialize application on load
+        window.addEventListener('DOMContentLoaded', () => {
+            window.app = new GuiaEstadiaApp();
+        });
+    </script>
+</body>
+</html>
